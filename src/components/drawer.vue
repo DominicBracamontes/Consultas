@@ -1,7 +1,6 @@
 <template>
     <v-navigation-drawer v-model="drawer" app>
       <v-list>
-        <!-- Espacio reservado para el usuario sin contenido -->
         <v-list-item>
           <v-list-item-title></v-list-item-title>
         </v-list-item>

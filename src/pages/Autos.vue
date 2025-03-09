@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <!-- Drawer -->
     <Drawer ref="drawerComponent" />
 
     <v-app-bar app>
@@ -8,10 +7,8 @@
       <v-toolbar-title>Mi Aplicación</v-toolbar-title>
     </v-app-bar>
 
-    <!-- Contenido principal -->
     <v-main>
       <v-container>
-        <!-- Llamamos al componente Tabla.vue -->
         <Tabla />
       </v-container>
     </v-main>
@@ -33,5 +30,4 @@ const toggleDrawer = () => {
 </script>
 
 <style scoped>
-/* Agrega algunos estilos si es necesario */
 </style>
