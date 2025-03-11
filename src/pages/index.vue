@@ -14,7 +14,7 @@
 
     <v-app-bar app>
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Mi Aplicación</v-toolbar-title>
+      <v-toolbar-title>Mi pagina web</v-toolbar-title>
     </v-app-bar>
 
     <v-main>

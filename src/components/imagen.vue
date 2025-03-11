@@ -11,7 +11,6 @@ async function fetchImage() {
   loading.value = false
 }
 
-// Llamar a fetchImage cuando el componente se monta
 onMounted(fetchImage)
 </script>
 

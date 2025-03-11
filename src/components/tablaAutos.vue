@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <!-- Barra circular de carga solo cuando 'loading' es verdadero y no se está mostrando el diálogo de eliminación -->
     <v-progress-circular
       v-if="loading && !deleteDialog"
       indeterminate
@@ -9,7 +8,6 @@
       class="center-circle"
     ></v-progress-circular>
 
-    <!-- Muestra la tabla cuando no está cargando -->
     <v-data-table
       v-else
       :headers="headers"
@@ -24,7 +22,6 @@
       </template>
     </v-data-table>
 
-    <!-- Dialog para editar un auto -->
     <v-dialog v-model="editDialog" max-width="500px">
       <v-card>
         <v-card-title class="headline">Editar Auto</v-card-title>
@@ -63,7 +60,6 @@
       </v-card>
     </v-dialog>
 
-    <!-- Dialog para confirmar eliminación de un auto -->
     <v-dialog v-model="deleteDialog" max-width="500px">
       <v-card>
         <v-card-title class="headline">Confirmar eliminación</v-card-title>
@@ -77,7 +73,6 @@
       </v-card>
     </v-dialog>
 
-    <!-- Alerta en caso de error al cargar los datos -->
     <v-alert v-if="error" type="error" dismissible>
       Hubo un error al cargar los datos. Por favor, inténtalo de nuevo.
     </v-alert>
@@ -93,7 +88,7 @@ const editDialog = ref(false);
 const deleteDialog = ref(false);
 const itemToDelete = ref(null);
 const valid = ref(false);
-const loading = ref(false);  // Estado para indicar si está cargando
+const loading = ref(false);
 const error = ref(false);
 
 const headers = [
@@ -108,10 +103,9 @@ const rules = {
   required: value => !!value || 'Este campo es obligatorio',
 };
 
-// Función para cargar los datos de autos
 const fetchAutos = async () => {
-  loading.value = true;  // Comienza la carga de datos
-  error.value = false;   // Resetear el estado de error al inicio de la carga
+  loading.value = true;
+  error.value = false;
   try {
     const response = await fetch('https://myfakeapi.com/api/cars');
     const data = await response.json();
@@ -123,64 +117,47 @@ const fetchAutos = async () => {
     }));
   } catch (err) {
     console.error('Error al cargar los autos:', err);
-    error.value = true;  // Setear el error si hay un problema
+    error.value = true;
   } finally {
-    loading.value = false; // Ocultar el círculo de carga después de 2 segundos
+    loading.value = false;
   }
 };
 
-// Llamar a fetchAutos al montar el componente
 onMounted(() => {
   fetchAutos();
 });
 
-// Función para editar un auto
 const editItem = (item) => {
   editedItem.value = { ...item };
   editDialog.value = true;
-  loading.value = false; // No mostrar círculo de carga cuando se abre el diálogo
+  loading.value = false;
 };
 
-// Función para guardar un auto editado
 const saveItem = () => {
   const index = autos.value.findIndex(auto => auto.id === editedItem.value.id);
   if (index !== -1) {
-    // Actualizar directamente el auto en la lista
     autos.value[index] = { ...editedItem.value };
   }
   editDialog.value = false;
-  
-  // Mostrar el círculo de carga al guardar el auto
   loading.value = true;
-  
-  // Simular un pequeño retraso para ver el círculo de carga
   setTimeout(() => {
-    loading.value = false; // Ocultar el círculo después de guardar
+    loading.value = false;
   }, 1000);
 };
 
-// Función para confirmar eliminación de un auto
 const confirmDeleteItem = (item) => {
   itemToDelete.value = item;
   deleteDialog.value = true;
-  loading.value = false; // No mostrar el círculo de carga cuando se confirma eliminación
+  loading.value = false;
 };
 
-// Función para eliminar un auto
 const deleteItem = () => {
-  // Mostrar el círculo de carga justo después de confirmar la eliminación
   loading.value = true;
-
-  // Realizar la eliminación del auto
   autos.value = autos.value.filter((auto) => auto.id !== itemToDelete.value.id);
   autos.value.forEach((auto, index) => {
     auto.id = index + 1;
   });
-
-  // Cerrar el diálogo de eliminación
   deleteDialog.value = false;
-
-  // Simular un pequeño retraso para mostrar el círculo de carga
   setTimeout(() => {
     loading.value = false;
   }, 1000);
@@ -193,7 +170,6 @@ const deleteItem = () => {
   overflow-y: auto;
 }
 
-/* Estilos para centrar el círculo de carga en la pantalla */
 .center-circle {
   position: fixed;
   top: 50%;
