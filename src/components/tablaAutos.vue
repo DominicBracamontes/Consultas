@@ -1,5 +1,9 @@
 <template>
   <v-container>
+    <v-alert v-if="error" type="error" dismissible>
+      Hubo un error al cargar los datos. Por favor, inténtalo de nuevo.
+    </v-alert>
+
     <v-progress-circular
       v-if="loading && !deleteDialog"
       indeterminate
@@ -72,10 +76,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <v-alert v-if="error" type="error" dismissible>
-      Hubo un error al cargar los datos. Por favor, inténtalo de nuevo.
-    </v-alert>
   </v-container>
 </template>
 
