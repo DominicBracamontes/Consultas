@@ -1,41 +1,24 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
-const imageUrl = ref('https://picsum.photos/800/500') // Imagen inicial
-const loading = ref(true) // Estado para controlar si la imagen está cargando
-const errorMessage = ref('') // Mensaje de error
+const imageUrl = ref('')
+const loading = ref(true)
 
-// Función para obtener una nueva imagen
 async function fetchImage() {
-  loading.value = true; // Comienza a cargar la imagen
-  errorMessage.value = ''; // Limpia cualquier mensaje de error anterior
-  try {
-    const response = await fetch('https://picsum.photos/800/500')
-    if (!response.ok) {
-      throw new Error('Error al cargar la imagen.')
-    }
-    imageUrl.value = response.url // Asigna la nueva imagen
-  } catch (error) {
-    errorMessage.value = 'No se pudo cargar la imagen. Intenta de nuevo.'
-  } finally {
-    loading.value = false; // Termina la carga, incluso si hubo error
-  }
+  loading.value = true
+  const response = await fetch('https://picsum.photos/800/500')
+  imageUrl.value = response.url
+  loading.value = false
 }
+
+// Llamar a fetchImage cuando el componente se monta
+onMounted(fetchImage)
 </script>
 
 <template>
   <div class="image-container">
-    <!-- Mostrar el indicador de carga mientras la imagen se está cargando -->
-    <v-progress-circle v-if="loading" indeterminate color="blue" size="60"></v-progress-circle>
-
-    <!-- Mostrar imagen cuando se haya cargado -->
-    <img v-if="!loading" :src="imageUrl" alt="Random Image" class="responsive-image" />
-
-    <!-- Mostrar mensaje de error si no se pudo cargar la imagen -->
-    <v-alert v-if="errorMessage" type="error" dismissible>
-      {{ errorMessage }}
-    </v-alert>
-
+    <v-progress-linear v-if="loading" indeterminate color="primary" height="4" class="progress-bar"></v-progress-linear>
+    <img v-else :src="imageUrl" alt="Random Image" class="responsive-image" />
     <button @click="fetchImage">Actualizar Imagen</button>
   </div>
 </template>
@@ -54,7 +37,6 @@ async function fetchImage() {
   max-width: 80%;
   height: auto;
   border-radius: 10px;
-  margin-top: 20px;
 }
 
 button {
